@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>インシデント報告</title>
+<style>
+body {
+  font-family: meiryo, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  background-color: #f4f4f9;
+  min-height: 100vh;
+}
+form {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 420px;
+}
+select, button, textarea, input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+  box-sizing: border-box;
+}
+textarea { resize: none; }
+select:focus, textarea:focus, input[type="text"]:focus {
+  border-color: #66afe9;
+  box-shadow: 0 0 8px rgba(102,175,233,0.6);
+  outline: none;
+}
+select:hover, textarea:hover, input[type="text"]:hover {
+  border-color: #66afe9;
+  box-shadow: 0 0 8px rgba(102,175,233,0.6);
+}
+button {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+button:hover { background-color: #45a049; transform: scale(1.05);}
+button:active { background-color: #3e8e41; transform: scale(0.95);}
+.other-text { display: none; }
+#message { text-align: center; font-size: 15px; margin-top: 10px; color: #333; }
+</style>
+</head>
+<body>
+<form id="incidentForm" action="https://script.google.com/macros/s/AKfycbzga4IKQJFfWpqfv2DXNCdwMUr02Z6QiDHIWJ5J85RBU6nmRyZX4ekljPH5-gYFW4XmEQ/exec" method="POST">
+<h1>インシデント報告</h1>
+
+<label>内容 正：</label>
+<textarea name="true-text" placeholder="正しい内容を入力" required></textarea>
+
+<label>内容 誤：</label>
+<textarea name="false-text" placeholder="誤った内容を入力" required></textarea>
+
+<!-- ミスの分類 -->
+<label>ミスの分類：</label>
+<select name="miss" id="miss" required>
+  <option value="" disabled selected>選択してください</option>
+  <option value="1">計数の誤り</option>
+  <option value="2">秤量・計量の誤り</option>
+  <option value="3">規格の誤り</option>
+  <option value="4">他薬を調剤</option>
+  <option value="5">禁忌・相互作用の見落とし</option>
+  <option value="6">処方箋ミスの見落とし</option>
+  <option value="7">一包化ミス</option>
+  <option value="8">異物などの混入</option>
+  <option value="9">調剤もれ</option>
+  <option value="10">交付漏れ</option>
+  <option value="11">同一成分の薬品ミス</option>
+  <option value="12">交付患者間違い</option>
+  <option value="13">処方入力ミス</option>
+  <option value="14">算定ミス</option>
+  <option value="15">その他</option>
+</select>
+<textarea id="miss-other" class="other-text" placeholder="その他の内容を入力"></textarea>
+<input type="hidden" name="miss-text" id="miss-text">
+
+<!-- 発生時間 -->
+<label>発生時間：</label>
+<select name="time" required>
+  <option value="" disabled selected>選択してください</option>
+  <option value="1">業務開始1時間以内</option>
+  <option value="2">休憩前後1時間</option>
+  <option value="3">業務終了1時間以内</option>
+  <option value="4">上記以外</option>
+</select>
+
+<!-- 発生場所 -->
+<label>発生場所：</label>
+<select name="place1" id="place1" required>
+  <option value="" disabled selected>選択してください</option>
+  <option value="1">入力時</option>
+  <option value="2">調剤時</option>
+  <option value="3">監査時</option>
+  <option value="4">交付時</option>
+  <option value="5">その他</option>
+</select>
+<textarea id="place1-other" class="other-text" placeholder="その他の内容を入力"></textarea>
+<input type="hidden" name="place1-text" id="place1-text">
+
+<!-- 発覚場所 -->
+<label>発覚場所：</label>
+<select name="place2" id="place2" required>
+  <option value="" disabled selected>選択してください</option>
+  <option value="1">入力時</option>
+  <option value="2">調剤時</option>
+  <option value="3">監査時</option>
+  <option value="4">交付時</option>
+  <option value="5">その他</option>
+</select>
+<textarea id="place2-other" class="other-text" placeholder="その他の内容を入力"></textarea>
+<input type="hidden" name="place2-text" id="place2-text">
+
+<!-- 混雑 -->
+<label>混雑：</label>
+<select name="congestion" required>
+  <option value="" disabled selected>選択してください</option>
+  <option value="1">空いていた</option>
+  <option value="2">普通</option>
+  <option value="3">混んでいた</option>
+</select>
+
+<!-- 業務経験 -->
+<label>業務経験：</label>
+<select name="experience1" required>
+  <option value="" disabled selected>選択してください</option>
+  <option value="1">0～1年</option>
+  <option value="2">1年～3年</option>
+  <option value="3">3年～10年</option>
+  <option value="4">10年以上</option>
+</select>
+
+<!-- 店舗経験 -->
+<label>店舗経験：</label>
+<select name="experience2" required>
+  <option value="" disabled selected>選択してください</option>
+  <option value="1">0～1年</option>
+  <option value="2">1年～3年</option>
+  <option value="3">3年～10年</option>
+  <option value="4">10年以上</option>
+  <option value="5">ヘルプ</option>
+</select>
+
+<!-- インシデントレベル -->
+<label>インシデントレベル：</label>
+<select name="level" required>
+  <option value="" disabled selected>選択してください</option>
+  <option value="1">①服用に関わらない、又は健康被害の可能性なし</option>
+  <option value="2">②服用前に発覚（健康被害の可能性あり）</option>
+  <option value="3">③服用前に発覚（重大な健康被害の可能性あり）</option>
+  <option value="4">④服用後に発覚（健康被害なし）</option>
+</select>
+
+<!-- クレーム -->
+<label>クレーム：</label>
+<select name="claim-text" required>
+  <option value="" disabled selected>選択してください</option>
+  <option value="有">有</option>
+  <option value="無">無</option>
+</select>
+
+<!-- ミスの原因・要因 -->
+<label>ミスの原因・要因：</label>
+<select name="cause" id="cause" required>
+  <option value="" disabled selected>選択してください</option>
+  <option value="1">他の業務を並行していた</option>
+  <option value="2">作業中断を要した</option>
+  <option value="3">精神的要因</option>
+  <option value="4">知識不足</option>
+  <option value="5">棚が隣同士だった</option>
+  <option value="6">デザインが似ていた</option>
+  <option value="7">名前が似ていた</option>
+  <option value="8">環境的要因</option>
+  <option value="9">手順逸脱</option>
+  <option value="10">処方箋読み間違い</option>
+  <option value="11">名前確認漏れ</option>
+  <option value="12">疑義照会不足</option>
+  <option value="13">無意識動作</option>
+  <option value="14">前回Doによる入力</option>
+  <option value="15">手入力ミス</option>
+  <option value="16">その他</option>
+</select>
+<textarea id="cause-other" class="other-text" placeholder="その他の内容を入力"></textarea>
+<input type="hidden" name="cause-text" id="cause-text">
+
+<button type="submit">送信</button>
+<div id="message"></div>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const fields = [
+    {select: 'miss', hidden: 'miss-text', other: 'miss-other'},
+    {select: 'place1', hidden: 'place1-text', other: 'place1-other'},
+    {select: 'place2', hidden: 'place2-text', other: 'place2-other'},
+    {select: 'cause', hidden: 'cause-text', other: 'cause-other'}
+  ];
+
+  fields.forEach(f => {
+    const sel = document.getElementById(f.select);
+    const hid = document.getElementById(f.hidden);
+    const other = document.getElementById(f.other);
+
+    // その他テキスト入力で hidden を更新
+    other.addEventListener('input', () => {
+      hid.value = other.value;
+    });
+
+    const update = () => {
+      const selectedText = sel.options[sel.selectedIndex].text;
+      if (selectedText.includes('その他')) {
+        other.style.display = 'block';
+        hid.value = other.value;
+      } else {
+        other.style.display = 'none';
+        other.value = '';
+        hid.value = selectedText;
+      }
+    };
+
+    update();
+    sel.addEventListener('change', update);
+  });
+
+  const form = document.getElementById('incidentForm');
+  const msg = document.getElementById('message');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.textContent = '送信中...';
+    const fd = new FormData(form);
+    try {
+      const res = await fetch(form.action, { method:'POST', body: fd });
+      const txt = await res.text();
+      if (txt.includes('Success')) {
+        msg.textContent = '送信完了しました。';
+        form.reset();
+        document.querySelectorAll('.other-text').forEach(t => t.style.display = 'none');
+      } else {
+        msg.textContent = '送信に失敗しました。';
+      }
+    } catch(err) {
+      msg.textContent = '通信エラーが発生しました。';
+    }
+  });
+});
+</script>
+</body>
+</html>
