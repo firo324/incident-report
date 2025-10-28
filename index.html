@@ -296,9 +296,11 @@
           const txt = await res.text();
 
           if (txt.includes('Success')) {
-            msg.textContent = '送信完了しました。';
+            const pharmacyVal = document.getElementById('pharmacy').value; // 現在の薬局名を保持
             form.reset();
+            document.getElementById('pharmacy').value = pharmacyVal;       // リセット後に戻す
             document.querySelectorAll('.other-text').forEach(t => t.style.display = 'none');
+            msg.textContent = '送信完了しました。';
           } else {
             msg.textContent = '送信に失敗しました: ' + txt;
           }
